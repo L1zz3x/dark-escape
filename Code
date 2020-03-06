@@ -1,0 +1,189 @@
+var reset = reset;
+var room = createSprite (200, 200);
+room.setAnimation ("dark");
+room.scale = 4;
+var generator = createSprite (200, 200);
+generator.setAnimation ("nothing");
+generator.x = randomNumber (10, 390);
+generator.y = randomNumber (10, 390);
+generator.scale = 0.7;
+var door = createSprite (375, 350);
+door.setAnimation ("nothing");
+var door2 = createSprite (30, 345);
+door2.setAnimation ("nothing");
+var guard = createSprite (200, 200);
+guard.setAnimation ("guardRight");
+var monster = createSprite(200, 200);
+monster.setAnimation("nothing");
+monster.scale = 0.7;
+monster.x = randomNumber (10, 390);
+monster.y = randomNumber (10, 390);
+var invisBox = createSprite (200, 200);
+invisBox.setAnimation ("nothing");
+invisBox.scale = 1.5;
+monster.debug = false;
+generator.debug = false;
+invisBox.debug = false;
+guard.debug = false;
+var jumpscare = createSprite (200, 200);
+jumpscare.setAnimation ("nothing");
+var lost = createSprite (200, 200);
+lost.setAnimation ("nothing");
+lost.scale = 4;
+var doorKey = createSprite (200, 200);
+doorKey.setAnimation ("nothing");
+var keyCheck = createSprite (40, 20);
+keyCheck.setAnimation ("keyCheckFalse");
+var escape = createSprite (200, 200);
+escape.setAnimation ("nothing");
+escape.scale = 4;
+var stud = createSprite(390, 390);
+stud.setAnimation("nothing");
+var leftWall = createSprite(0, 0);
+leftWall.setAnimation ("vertical");
+leftWall.scale = 8;
+var rightWall = createSprite(400, 0);
+rightWall.setAnimation ("vertical");
+rightWall.scale = 8;
+var bottomWall = createSprite (0, 400);
+bottomWall.setAnimation ("horizantal");
+bottomWall.scale = 8; 
+var topWall = createSprite (0, 0);
+topWall.setAnimation ("horizantal");
+topWall.scale = 8; 
+var stud = createSprite (200, 200);
+stud.setAnimation ("nothing");
+var resetTimer = 0;
+
+function draw (){
+guard.collide(topWall);
+guard.collide(bottomWall);
+guard.collide(leftWall);
+guard.collide(rightWall);
+monster.collide(topWall);
+monster.collide(bottomWall);
+monster.collide(leftWall);
+monster.collide(rightWall);
+  
+  doorKey.x = monster.x;
+  doorKey.y = monster.y;
+  
+  if (guard.isTouching(generator)) {
+    generator.setAnimation("genOff");
+    if (keyDown("space")) {
+      generator.setAnimation("genOn");
+      room.setAnimation("wood");
+      monster.setAnimation ("monster");
+      doorKey.setAnimation ("doorKey");
+    }
+  } else {
+    generator.setAnimation("nothing");
+  }
+
+  
+  if (guard.isTouching(doorKey)){
+    if (keyDown ("space")){
+      guard.setAnimation ("guardKey");
+      keyCheck.setAnimation ("keyCheckTrue");
+      door.setAnimation ("door");
+      doorKey.visible = false;
+      doorKey.x = 500;
+      stud.x = 500;
+      door2.setAnimation ("badDoor");
+    }
+  }
+  if (keyDown("up")) {
+    guard.y = guard.y + -3;
+  }
+  if (keyDown("down")) {
+    guard.y = guard.y + 3;
+  }
+  if (keyDown("left")) {
+    guard.x = guard.x + -3;
+    guard.setAnimation("guardLeft");
+  }
+  if (keyDown("right")) {
+    guard.x = guard.x + 3;
+    guard.setAnimation("guardRight");
+  }
+  if (keyDown("w")) {
+    guard.y = guard.y + -3;
+  }
+  if (keyDown("s")) {
+    guard.y = guard.y + 3;
+  }
+  if (keyDown("a")){
+    guard.x = guard.x + -3;
+    guard.setAnimation("guardLeft");
+  }
+  if (keyDown("d")) {
+    guard.x = guard.x + 3;
+    guard.setAnimation("guardRight");
+  }
+if (guard.isTouching (monster)){
+  jumpscare.x = 200;
+  jumpscare.y = 200;
+  jumpscare.scale = monster.scale + 0.1;
+  jumpscare.scale = 4;
+  lost.setAnimation("youLost");
+  jumpscare.setAnimation ("jumpscare");
+  
+  }
+  
+  if (monster.isTouching (invisBox)){
+    monster.x = randomNumber (10, 390);
+    monster.y = randomNumber (10, 390);
+    monster.setAnimation ("nothing2");
+    monster.scale = 0.7;
+    lost.setAnimation("nothing");
+  }
+  if (stud.x > 400) {
+    if (guard.isTouching (door)){
+      escape.setAnimation ("escape");
+      doorKey.visible = true;
+    }
+  }
+  
+  if (guard.isTouching (door2)){
+      jumpscare.x = 200;
+  jumpscare.y = 200;
+  jumpscare.scale = monster.scale + 0.1;
+  jumpscare.scale = 4;
+  lost.setAnimation("youLost");
+  jumpscare.setAnimation ("jumpscare");
+  }
+if (keyDown("space")) {
+  resetTimer += 1;
+} else {
+  resetTimer = 0;
+}
+  if (resetTimer == 30){
+    room.setAnimation ("dark");
+  room.scale = 4;
+  generator.setAnimation ("nothing");
+  generator.x = randomNumber (10, 390);
+  generator.y = randomNumber (10, 390);
+  generator.scale = 0.7;
+  door.setAnimation ("nothing");
+  guard.setAnimation ("guardRight");
+  monster.setAnimation("nothing");
+  monster.scale = 0.7;
+  monster.x = randomNumber (10, 390);
+  monster.y = randomNumber (10, 390);
+  invisBox.setAnimation ("nothing");
+  invisBox.scale = 1.5;
+  jumpscare.setAnimation ("nothing");
+  lost.setAnimation ("nothing");
+  lost.scale = 4;
+  doorKey.setAnimation ("nothing");
+  keyCheck.setAnimation ("keyCheckFalse");
+  escape.setAnimation ("nothing");
+  escape.scale = 4;
+  guard.x = 200;
+  guard.y = 200;
+  doorKey.x = 200;
+  door2.setAnimation ("nothing");
+  stud.x = 200;
+  }
+  drawSprites();
+}
